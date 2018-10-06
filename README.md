@@ -1,4 +1,4 @@
 # Smart home app
 
 Works with:
-* https://github.com/eigenein/led-strip
+* https://www.ab-log.ru/smart-house/ethernet/megad-2561
