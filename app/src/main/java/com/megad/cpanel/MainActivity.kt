@@ -1,20 +1,26 @@
 package com.megad.cpanel
 
 import android.content.Context
-import android.net.nsd.NsdManager
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
+import com.megad.cpanel.core.DeviceManager
+import com.megad.cpanel.extensions.addTo
+import com.megad.cpanel.ui.DeviceAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_layout.*
-import com.megad.cpanel.R
-import com.megad.cpanel.core.DeviceManager
-import com.megad.cpanel.core.requests.PingRequest
-import com.megad.cpanel.extensions.addTo
-import com.megad.cpanel.ui.DeviceAdapter
+import java.net.NetworkInterface
+import android.net.DhcpInfo
+import android.content.Context.WIFI_SERVICE
+import android.support.v4.content.ContextCompat.getSystemService
+import android.net.wifi.WifiManager
+import java.io.IOException
+import java.net.InetAddress
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -34,21 +40,20 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+//        DeviceManager
+//                .listen()
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(adapter::handleResponse)
+//                .addTo(disposable)
 
         DeviceManager
-            .listen()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(adapter::handleResponse)
-            .addTo(disposable)
-
-        DeviceManager
-            .discover(getSystemService(Context.NSD_SERVICE) as NsdManager)
-            .flatMapCompletable { DeviceManager.send(it, PingRequest()) }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe()
-            .addTo(disposable)
+                .discover(applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager)
+//                .flatMapCompletable { DeviceManager.send(it, PingRequest()) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe()
+                .addTo(disposable)
     }
 
     override fun onPause() {

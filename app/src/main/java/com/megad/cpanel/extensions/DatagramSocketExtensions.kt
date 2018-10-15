@@ -1,6 +1,7 @@
 package com.megad.cpanel.extensions
 
 import android.util.Log
+import com.megad.cpanel.core.DeviceRequest2
 import java.net.DatagramPacket
 import java.net.DatagramSocket
 
